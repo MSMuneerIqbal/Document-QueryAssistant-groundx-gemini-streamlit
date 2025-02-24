@@ -1,27 +1,15 @@
-import os
-
-import google.generativeai as genai
 import streamlit as st
-from dotenv import load_dotenv
-
+import google.generativeai as genai
 from groundx import GroundX
 
-# Load environment variables from .env file
-load_dotenv()
-
-# # Access API keys from environment variables in local
-# GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-# GROUNDX_API_KEY = os.getenv("GROUNDX_API_KEY")
-
-# Acessing API KEYs in streamlit live app
+# Access API keys from st.secrets
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
-GROUNDX_API_KEY = st.secrets("GROUNDX_API_KEY")
-
+GROUNDX_API_KEY = st.secrets["GROUNDX_API_KEY"]
 
 # Configure Gemini API
 genai.configure(api_key=GOOGLE_API_KEY)
 
-# Initialize GroundX with API key from .env
+# Initialize GroundX with API key from secrets
 groundx = GroundX(api_key=GROUNDX_API_KEY)
 
 # Set up the Gemini model
@@ -32,7 +20,7 @@ instruction = "You are a helpful virtual assistant that answers questions using 
 
 # Streamlit UI setup
 st.title("Document Query Assistant")
-st.write("Ask a question about the Muneer Iqbal")
+st.write("Ask a question about Muneer Iqbal")
 
 # Chat input for user query
 query = st.chat_input("Enter your query here (e.g., 'who is muneer iqbal')")
@@ -59,6 +47,10 @@ if query:
     llm_text = results.text
     raw_score = results.score
 
+    # Normalize the score to 0-1 (assuming max score of 500)
+    max_score = 500  # Adjust based on GroundX's actual max score if known
+    normalized_score = min(raw_score / max_score, 1.0)
+
     # Prepare the prompt for Gemini
     prompt = f"""{instruction}
 ===
@@ -72,59 +64,6 @@ if query:
 
     # Display assistant response in chat
     with st.chat_message("assistant"):
-        response_text = f"**Result:**\n{response.text}\n"
+        response_text = f"**Result:**\n{response.text}\n\n**Score:** {normalized_score:.2f}"
         st.markdown(response_text)
     st.session_state.messages.append({"role": "assistant", "content": response_text})
-
-
-# import google.generativeai as genai
-# from groundx import GroundX
-# from dotenv import load_dotenv
-# import os
-
-# # Load environment variables from .env file
-# load_dotenv()
-
-# # Access API keys from environment variables
-# GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-# GROUNDX_API_KEY = os.getenv("GROUNDX_API_KEY")
-
-# # Configure Gemini API
-# genai.configure(api_key=GOOGLE_API_KEY)
-
-# query = "summarize the document"
-
-# # Initialize GroundX with API key from .env
-# groundx = GroundX(api_key=GROUNDX_API_KEY)
-
-# # Set up the Gemini model
-# model = genai.GenerativeModel("gemini-pro")
-
-# instruction = "You are a helpful virtual assistant that answers questions using the content below. Your task is to create detailed answers to the questions by combining your understanding of the world with the content provided below. Do not share links."
-
-# # Get content from GroundX
-# content_response = groundx.search.content(id=15876, query="tell about muneer iqbal")
-# results = content_response.search
-# llm_text = results.text
-
-# # Prepare the prompt for Gemini
-# prompt = f"""{instruction}
-# ===
-# {llm_text}
-# ===
-# {query}"""
-
-# # Generate response using Gemini
-# response = model.generate_content(prompt)
-
-# print(
-#     """
-# QUERY
-# %s
-# SCORE
-# [%.2f]
-# RESULT
-# %s
-# """
-#     % (query, results.score, response.text)
-# )
