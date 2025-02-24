@@ -7,8 +7,8 @@ from groundx import GroundX
 load_dotenv()
 
 # Access API keys from environment variables
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-GROUNDX_API_KEY = os.getenv("GROUNDX_API_KEY")
+# GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+# GROUNDX_API_KEY = os.getenv("GROUNDX_API_KEY")
 # Access API keys from st.secrets
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 GROUNDX_API_KEY = st.secrets["GROUNDX_API_KEY"]
