@@ -45,11 +45,6 @@ if query:
     content_response = groundx.search.content(id=15876, query=query)
     results = content_response.search
     llm_text = results.text
-    raw_score = results.score
-
-    # Normalize the score to 0-1 (assuming max score of 500)
-    max_score = 500  # Adjust based on GroundX's actual max score if known
-    normalized_score = min(raw_score / max_score, 1.0)
 
     # Prepare the prompt for Gemini
     prompt = f"""{instruction}
@@ -64,6 +59,6 @@ if query:
 
     # Display assistant response in chat
     with st.chat_message("assistant"):
-        response_text = f"**Result:**\n{response.text}\n\n**Score:** {normalized_score:.2f}"
+        response_text = f"**Result:**\n{response.text}\n"
         st.markdown(response_text)
     st.session_state.messages.append({"role": "assistant", "content": response_text})
