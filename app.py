@@ -9,9 +9,14 @@ from groundx import GroundX
 # Load environment variables from .env file
 load_dotenv()
 
-# Access API keys from environment variables
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-GROUNDX_API_KEY = os.getenv("GROUNDX_API_KEY")
+# # Access API keys from environment variables in local
+# GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+# GROUNDX_API_KEY = os.getenv("GROUNDX_API_KEY")
+
+# Acessing API KEYs in streamlit live app
+GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
+GROUNDX_API_KEY = st.secrets("GROUNDX_API_KEY")
+
 
 # Configure Gemini API
 genai.configure(api_key=GOOGLE_API_KEY)
