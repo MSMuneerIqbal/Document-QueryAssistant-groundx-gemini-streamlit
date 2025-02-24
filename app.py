@@ -2,6 +2,13 @@ import streamlit as st
 import google.generativeai as genai
 from groundx import GroundX
 
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Access API keys from environment variables
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+GROUNDX_API_KEY = os.getenv("GROUNDX_API_KEY")
 # Access API keys from st.secrets
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 GROUNDX_API_KEY = st.secrets["GROUNDX_API_KEY"]
