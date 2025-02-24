@@ -4,7 +4,7 @@ from groundx import GroundX
 
 
 # Load environment variables from .env file
-load_dotenv()
+# load_dotenv()
 
 # Access API keys from environment variables
 # GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
